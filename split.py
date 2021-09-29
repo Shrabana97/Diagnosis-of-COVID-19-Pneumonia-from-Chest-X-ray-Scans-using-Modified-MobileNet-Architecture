@@ -6,10 +6,23 @@ import random
 import os
 from shutil import copyfile
 
-txt = open("path_of_train_dir.txt", "w") 
-root_dir = input("Path where 'train' directory belongs: ")
-txt.write(root_dir)
-txt.close()
+def path_of_train_dir():
+    txt = open("path_of_train_dir.txt", "w") 
+    root_dir = input("Path where 'train' directory belongs: ")
+    txt.write(root_dir)
+    txt.close()
+    return root_dir
+
+if os.path.exists("path_of_train_dir.txt"):
+    open_root_dir = open("path_of_train_dir.txt", "r")
+    root_dir = open_root_dir.read()
+    if os.path.exists(os.path.join(root_dir, 'train')):
+        print(f"Train directory already exists at {root_dir}\n\n")   
+    else:
+        root_dir = path_of_train_dir()
+else:
+    root_dir = path_of_train_dir()
+
 
 source_folder_dir = os.path.join(root_dir, 'train')
 source_folder_dir_class = []
@@ -83,7 +96,7 @@ print("Total no. of files: {}".format(source_data))
 VALIDATION_SPLIT_SIZE = 10
 VALIDATION_SPLIT_SIZE = VALIDATION_SPLIT_SIZE/100
 
-TEST_SPLIT_SIZE = 50
+TEST_SPLIT_SIZE = 10
 TEST_SPLIT_SIZE = TEST_SPLIT_SIZE/100
 
 train_class = []
@@ -108,4 +121,4 @@ for source_dir, train_dir, val_dir, test_dir in zip(source_folder_dir_class,
     print("\nSplitted the RAW data from " + str(source_dir) + " & storing it into 3 folders at:\n" + str(train_dir) + '\n' + str(val_dir) + '\n' + str(test_dir))
 
 
-print("\n\n399 images will be used to validate the model. \n1,995 images will be used to perform blind-testing. \nAfter applying classical augmentation on the rest of the images, they'll be used for training.")
+print("\n\n399 images will be used to validate the model. \n399 images will be used to perform blind-testing. \nAfter applying classical augmentation on the rest of the images, they'll be used for training.")
